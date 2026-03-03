@@ -4,6 +4,7 @@ import threading
 import time
 import tkinter as tk
 from tkinter import ttk, messagebox
+import tkinter.font as tkfont
 
 import serial
 from serial.tools import list_ports
@@ -17,6 +18,10 @@ WIN_BONUS = 5
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.configure(bg="#0b0f1a")
+
+        self.arcade_font = self._pick_font("Press Start 2P", "Consolas")
+        self.retro_font = self._pick_font("VT323", "Consolas")
         self.configure(bg="#121212")
         self._setup_styles()
         self.title("Pattern Lock - Leaderboard")
@@ -34,8 +39,49 @@ class App(tk.Tk):
         self._ensure_csv_exists()
         self.refresh_leaderboard()
 
+    def _pick_font(self, preferred: str, fallback: str = "Consolas"):
+        families = set(tkfont.families(self))
+        return preferred if preferred in families else fallback
+
     def _build_ui(self):
         pad = {"padx": 10, "pady": 8}
+
+        # ===== Header =====
+        header = tk.Frame(self, bg="#0b0f1a")
+        header.pack(fill="x", padx=12, pady=(12, 6))
+
+        title = tk.Label(
+            header,
+            text="PATTERN LOCK",
+            bg="#0b0f1a",
+            fg="#35f2ff",  # neon cyan
+            font=(self.arcade_font, 20, "bold")
+        )
+        title.pack()
+
+        subtitle = tk.Label(
+            header,
+            text="Memory Challenge • Arduino + Sound",
+            bg="#0b0f1a",
+            fg="#b7c7ff",
+            font=(self.retro_font, 14)
+        )
+        subtitle.pack(pady=(4, 0))
+
+        # ===== Now Playing =====
+        now_frame = tk.Frame(self, bg="#0b0f1a")
+        now_frame.pack(fill="x", padx=12, pady=(6, 10))
+
+        self.now_playing_var = tk.StringVar(value="Now Playing: —")
+        now_playing = tk.Label(
+            now_frame,
+            textvariable=self.now_playing_var,
+            bg="#0b0f1a",
+            fg="#ff3df5",  # neon pink
+            font=(self.arcade_font, 12, "bold"),
+            anchor = "center"
+        )
+        now_playing.pack(fill="x")
 
         serial_frame = ttk.LabelFrame(self, text="Arduino Connection")
         serial_frame.pack(fill="x", **pad)
@@ -165,6 +211,7 @@ class App(tk.Tk):
             messagebox.showinfo("Game running", "A game is already running.")
             return
 
+        self.now_playing_var.set(f"Now Playing: {name}")
         self.current_player = name
         self.session_points = 0
         self.session_var.set("Session points: 0")
@@ -223,6 +270,7 @@ class App(tk.Tk):
                 f"{self.current_player} WON!\nSession points: {self.session_points}\n(+{WIN_BONUS} win bonus)\n\nPress Refresh to update leaderboard."
             ))
             self.game_running = False
+            self.after(0, lambda: self.now_playing_var.set("Now Playing: —"))
 
         elif line == "GAME_OVER":
             self._update_csv_score(self.current_player, self.session_points)
@@ -231,6 +279,7 @@ class App(tk.Tk):
                 f"{self.current_player} LOST.\nSession points: {self.session_points}\n\nPress Refresh to update leaderboard."
             ))
             self.game_running = False
+            self.after(0, lambda: self.now_playing_var.set("Now Playing: —"))
 
     def _read_scores(self):
         scores = {}
