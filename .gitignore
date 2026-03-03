@@ -11,3 +11,9 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Ignore leaderboard scores
+leaderboard.csv
+
+# Ignore all ttf fonts
+*.ttf
