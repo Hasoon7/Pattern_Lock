@@ -13,5 +13,5 @@ __pycache__/
 Thumbs.db
 
 # Ignore leaderboard scores
-leaderboard.csv
+.csv/
 
