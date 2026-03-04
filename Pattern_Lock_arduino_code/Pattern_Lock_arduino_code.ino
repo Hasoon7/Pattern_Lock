@@ -154,10 +154,18 @@ void getTryConfig(int tryNumber, int &mode, const SpeedProfile* &spd, int &lengt
     length = tryNumber; // 4,5,6
     return;
   }
+  else if(tryNumber == 7){
   // Try 7: Sound-only, length 5
   mode = 2;
-  spd = &SPEED_SOUND_SLOW;
-  length = 5;
+  spd = &SPEED_SLOW;
+  length = 3;
+  }
+  else{
+    mode = 2;
+    spd = &SPEED_SLOW;
+    length = 3;
+  }
+
 }
 
 // ===== Serial command: wait for START =====
@@ -204,7 +212,7 @@ void loop() {
 
   int mistakes = 0;
 
-  for (int t = 1; t <= 7; t++) {
+  for (int t = 1; t <= 8; t++) {
     int mode, length;
     const SpeedProfile* spd;
     getTryConfig(t, mode, spd, length);
