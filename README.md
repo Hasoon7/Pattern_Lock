@@ -8,6 +8,6 @@ to run the code on your machine there is a couple of things you have to do:
   you can use EITHER of the gui codes, the one made in pygame is better in my opinion.
   after you decide which gui code you want to use then see the first few lines, what did it say to import ? downlad them, delete the other gui code, and start playing!
   (or modifying the code to make your own game :) )
-- after you've done the previous things, now you have to make a file named leaderboard.csv in the same directory as the codes.
 - now you're good to go <3
+
 this code was made with the help of AI, I used it as a companion because I wanted to finish as quickly as possible.
