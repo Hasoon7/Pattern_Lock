@@ -1,6 +1,6 @@
 int leds[4]    = {2, 3, 4, 5};
-int buttons[4] = {7, 8, 9, 11};
-const int buzzerPin = 12;
+int buttons[4] = {7, 8, 9, 12};
+const int buzzerPin = 11;
 
 const int MAX_SEQ = 12;
 int sequenceArr[MAX_SEQ];
@@ -19,10 +19,10 @@ SpeedProfile SPEED_SOUND_SLOW = {320, 240};
 // ===== Frequency mapping for passive buzzer =====
 int freqForButton(int btnIdx) {
   switch (btnIdx) {
-    case 0: return 400;
-    case 1: return 550;
-    case 2: return 690;
-    case 3: return 940;
+    case 0: return 1000;
+    case 1: return 2000;
+    case 2: return 3000;
+    case 3: return 4000;
     default: return 400;
   }
 }
